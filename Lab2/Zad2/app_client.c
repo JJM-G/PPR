@@ -19,11 +19,10 @@ void testowy_1(char *host, FILE *file) {
         clnt_pcreateerror(host);
         exit(1);
     }
-    #endif /* DEBUG */
+    #endif
 
-    while ((read_size = fread(obliczenia_1_arg.x1, 1, 19, file)) > 0) {  // 19 znaków + '\0'
-        obliczenia_1_arg.x1[read_size] = '\0';  // Zapewniamy zakończenie stringa
-
+    while ((read_size = fread(obliczenia_1_arg.x1, 1, 19, file)) > 0) {
+        obliczenia_1_arg.x1[read_size] = '\0';
         result_1 = obliczenia_1(&obliczenia_1_arg, clnt);
         if (result_1 == (wyjscie *)NULL) {
             clnt_perror(clnt, "call failed");
