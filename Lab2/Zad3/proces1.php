@@ -8,7 +8,6 @@ if (!$sock) {
     die("Błąd tworzenia gniazda\n");
 }
 
-// Połączenie z Procesem 2
 if (!socket_connect($sock, $server, $port)) {
     die("Błąd połączenia z serwerem TCP\n");
 }

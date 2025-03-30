@@ -4,19 +4,17 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <rpc/rpc.h>
-#include "app.h"  // Zawiera definicje RPC
+#include "app.h" 
 
 #define PORT 5000
 #define BUFFER_SIZE 100
 
-// Funkcja do obsługi komunikacji TCP i RPC
 void testowy_1(char *host, int client_sock) {
     CLIENT *clnt;
     wyjscie *result_1;
     wejscie obliczenia_1_arg;
     size_t read_size;
 
-    // Tworzenie klienta RPC
     #ifndef DEBUG
     clnt = clnt_create(host, TESTOWY, PROBNA, "udp");
     if (clnt == NULL) {
@@ -25,13 +23,10 @@ void testowy_1(char *host, int client_sock) {
     }
     #endif /* DEBUG */
 
-    // Odbieranie danych przez TCP i wysyłanie do RPC w porcjach
+   
     while ((read_size = recv(client_sock, obliczenia_1_arg.x1, 19, 0)) > 0) {
-        obliczenia_1_arg.x1[read_size] = '\0';  // Zapewniamy zakończenie stringa
+        obliczenia_1_arg.x1[read_size] = '\0'; 
 
-        
-
-        // Wysyłanie danych przez RPC
         result_1 = obliczenia_1(&obliczenia_1_arg, clnt);
         if (result_1 == (wyjscie *)NULL) {
             clnt_perror(clnt, "RPC call failed");
@@ -74,13 +69,10 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    // Nasłuchiwanie na połączenia
     if (listen(server_sock, 1) == -1) {
         perror("Błąd nasłuchiwania");
         exit(1);
     }
-
-    printf("[TCP Server] Czekam na połączenie...\n");
 
     // Akceptowanie połączenia z klientem
     client_sock = accept(server_sock, (struct sockaddr*)&client_addr, &client_len);
@@ -88,13 +80,9 @@ int main(int argc, char *argv[]) {
         perror("Błąd akceptowania połączenia");
         exit(1);
     }
-
    
-
-    // Przekazywanie gniazda do funkcji obsługującej RPC
     testowy_1(argv[1], client_sock);
 
-    // Zamknięcie gniazda
     close(client_sock);
     close(server_sock);
 
