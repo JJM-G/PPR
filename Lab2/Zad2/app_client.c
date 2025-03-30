@@ -19,7 +19,7 @@ void testowy_1(char *host, FILE *file) {
         clnt_pcreateerror(host);
         exit(1);
     }
-    #endif
+    #endif /* DEBUG */
 
     while ((read_size = fread(obliczenia_1_arg.x1, 1, 19, file)) > 0) {
         obliczenia_1_arg.x1[read_size] = '\0';
